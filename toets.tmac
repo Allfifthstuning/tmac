@@ -1,0 +1,46 @@
+\# Toets macro
+\# Macro gaat ervan uit dat er gebruik gemaakt wordt van
+\# mmroff processor.
+\# De benodigde bestanden om kruisverwijzingen te kunnen maken
+.INITR CrossReferences
+.so punten.txt
+.so vragen.txt
+\# fonttype en puntgrootte op basis van dyslectie standaard.
+\#.fam H
+.S 12 14
+\# Instellen van de juiste waarden
+.ds Lifg Figuur
+.PH "''''"
+.PF  "''- % -''"
+.nr VRAAGNR 0 1
+.nr ANTNR 1
+.nr PUNTT 0
+\# Vraag macro
+.de VRAAG END
+.	nr PUNTT \\n[PUNTT]+\\$2
+.	nr POSP \\n[.o]u/2u
+.br
+\h'-\\n[POSP]u'(\\$2p)\h'-\w'(\\$2p)'u'\h'\\n[POSP]u'\\n+[VRAAGNR]. \\$1 
+.	br
+.END
+\#Antwoord macro
+.de ANT END
+.	if (\n[ANTNR] == 0) .ig ANTEND
+.	br
+.	B Antwoord:
+.	br
+.END
+.
+.de ANTEND END
+.	br
+.END
+\# Eind macro
+.de EIND END
+.	open punten punten.txt
+.	write punten .nr TOTP \\n[PUNTT]
+.	close punten
+.
+.	open vragen vragen.txt
+.	write vragen .nr TOTV \\n[VRAAGNR]
+.	close vragen
+.END
